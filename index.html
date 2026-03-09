@@ -1,0 +1,563 @@
+﻿<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法務ニュース DAILY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --header: #c62828;
+      --text: #1f1f1f;
+      --subtext: #5f6368;
+      --card-bg: #ffffff;
+      --border: #e0e0e0;
+      --social: #1976d2;
+      --admin: #388e3c;
+      --judicial: #7b1fa2;
+      --business: #e65100;
+      --life: #00838f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+    }
+
+    .app {
+      max-width: 640px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+    }
+
+    .header {
+      background: var(--header);
+      color: #fff;
+      padding: 12px 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+
+    .logo {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      line-height: 1;
+      opacity: 0.95;
+      user-select: none;
+    }
+
+    .subtitle {
+      margin: 4px 0 0;
+      font-size: 12px;
+      opacity: 0.92;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 12px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 64px;
+      z-index: 15;
+      scrollbar-width: thin;
+    }
+
+    .tabs::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .tab {
+      border: 1px solid #d5d5d5;
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      white-space: nowrap;
+      color: #333;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .tab.active {
+      background: #212121;
+      color: #fff;
+      border-color: #212121;
+    }
+
+    .list {
+      padding: 8px 12px 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .badge {
+      color: #fff;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
+    .badge.社会 {
+      background: var(--social);
+    }
+
+    .badge.行政 {
+      background: var(--admin);
+    }
+
+    .badge.司法 {
+      background: var(--judicial);
+    }
+
+    .badge.企業経済 {
+      background: var(--business);
+    }
+
+    .badge.くらし {
+      background: var(--life);
+    }
+
+    .date {
+      color: #666;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .lead {
+      margin: 8px 0 0;
+      color: var(--subtext);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .readmore {
+      margin-top: 10px;
+      width: 100%;
+      border: 0;
+      background: #f5f5f5;
+      color: #333;
+      border-radius: 6px;
+      padding: 9px 10px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .readmore:focus-visible {
+      outline: 2px solid #3949ab;
+      outline-offset: 2px;
+    }
+
+    .detail {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.45s ease, opacity 0.3s ease, margin-top 0.3s ease;
+      margin-top: 0;
+    }
+
+    .detail.open {
+      max-height: 2600px;
+      opacity: 1;
+      margin-top: 10px;
+    }
+
+    .article-body p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      color: #222;
+      white-space: pre-line;
+    }
+
+    .exam-body {
+      margin-top: 10px;
+      background: #fff8e1;
+      border-radius: 8px;
+      padding: 10px 10px 12px;
+    }
+
+    .exam-label {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: #5d4037;
+      letter-spacing: 0.2px;
+    }
+
+    .exam-body p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: #222;
+      white-space: pre-line;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #dadada;
+      margin: 10px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-top">
+        <div class="brand"><span class="logo">法</span>法務ニュース DAILY</div>
+        <div class="menu-icon" aria-hidden="true">≡</div>
+      </div>
+      <p class="subtitle">行政・司法・くらしの最新情報</p>
+    </header>
+
+    <nav class="tabs" aria-label="カテゴリタブ">
+      <button class="tab active" type="button" data-filter="すべて">すべて</button>
+      <button class="tab" type="button" data-filter="社会">社会</button>
+      <button class="tab" type="button" data-filter="行政">行政</button>
+      <button class="tab" type="button" data-filter="司法">司法</button>
+      <button class="tab" type="button" data-filter="企業・経済">企業・経済</button>
+      <button class="tab" type="button" data-filter="くらし">くらし</button>
+    </nav>
+
+    <main class="list">
+      <article class="card" data-category="司法">
+        <div class="meta"><span class="badge 司法">司法</span><span class="date">1973年4月4日</span></div>
+        <h2>「親殺し」に死刑のみ科した刑法条文、最高裁が違憲と判断—昭和48年</h2>
+        <p class="lead">14歳から10年以上、実父に性的虐待を受け続けた女性がついに手を下した。だが彼女を裁いた法律は「親殺し」に死刑か無期懲役しか用意していなかった。この事件が、戦後初の違憲判決を引き出すことになる。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>昭和48年4月4日、最高裁判所大法廷は、刑法旧200条（尊属殺重罰規定）を憲法14条1項（法の下の平等）に違反するとして無効と判示した。</p>
+            <p>事件の発端は昭和43年。栃木県在住の女性（当時29歳）が、14歳から10年以上にわたって性的虐待を続けた実父を絞殺したというものだった。</p>
+            <p>一審は刑法旧200条を適用して有罪としたが、裁判官が「被告人の境遇に同情すべき点が多い」として執行猶予付きの判決を言い渡した。この判決に対し、弁護側が尊属殺規定そのものの違憲性を争い、最高裁に上告した。</p>
+            <p>最高裁は「尊属に対する尊重報恩は社会生活上の基本的道義として尊重されるべき」としつつも、「尊属殺の法定刑は通常殺に比し著しく重く、刑罰の加重の程度が極端であって立法目的達成のための必要な限度を超えている」と述べ、違憲と結論づけた。</p>
+            <p>この判決は戦後初めて最高裁が法律を違憲とした判決として、司法史上の画期的な事例とされる。刑法旧200条は1995年の刑法改正で正式に削除された。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>この判例は行政書士試験「憲法」の最頻出判例のひとつです。
+● 争点：憲法14条1項「法の下の平等」＝不合理な差別的取扱いの禁止
+● 判断手法：「目的が正当か」＋「手段が目的に必要な限度内か」の2段階審査
+● 結論：目的は正当だが、手段（刑の加重）が過度 → 違憲
+● 試験頻出ポイント：「合理的区別は許容されるが、不合理な差別は14条違反」の原則をこの事件で覚える。</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="社会">
+        <div class="meta"><span class="badge 社会">社会</span><span class="date">1957年8月14日</span></div>
+        <h2>結核療養中の元記者、生活保護費の増額求め提訴—「人間裁判」と呼ばれた闘い</h2>
+        <p class="lead">「石鹸一個も買えない」——月600円の生活保護費しか受け取れない結核患者が国を訴えた。「人間裁判」と呼ばれたこの闘いは、国家が国民の生存に対してどこまで責任を負うかを問い続けた。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>1957年、肺結核で長期入院中の朝日茂氏は、国から支給される生活保護費が月600円（日用品費）であることに疑問を抱いた。「これでは石鹸一個も満足に買えない」として、保護変更申請が却下されたことを不服とし、行政不服申立て、そして訴訟へと進んだ。</p>
+            <p>一審・東京地裁（昭和35年）は原告勝訴。「健康で文化的な最低限度の生活は具体的権利であり、月600円は憲法25条の要請を満たさない」と判断した。</p>
+            <p>しかし、原告の朝日氏は最高裁への上告中に死亡。最高裁は昭和42年、「訴訟は訴訟承継できない一身専属的なもの」として審理を打ち切り、実体判断を行わなかった。</p>
+            <p>それでもこの訴訟は「生存権は国の義務か、努力目標か」という問いを社会に投げかけ、その後の社会保障制度の整備に大きな影響を与えた。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 争点：憲法25条「生存権」＝「健康で文化的な最低限度の生活を営む権利」
+● プログラム規定説 vs 具体的権利説：最高裁はプログラム規定説（国の政治的義務）に近い立場
+● 試験頻出ポイント：「生存権の法的性格」と「厚生大臣の裁量の広さ」がセットで出る
+● 最高裁が実体判断を避けた点（訴訟の終了理由）も出題例あり</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="行政">
+        <div class="meta"><span class="badge 行政">行政</span><span class="date">2024年11月12日（架空）</span></div>
+        <h2>飲食店主、行政に泣き寝入りせず—「弁明の機会もなく営業停止は違法」と提訴</h2>
+        <p class="lead">ある日突然、封筒一枚で「30日間の営業停止」を告げられた居酒屋店主。弁明の機会も与えられないまま下された処分に、Aさん（54歳）は「これが法治国家のやることか」と怒りをあらわにした。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>Aさんの店では今年9月、食中毒の疑いがあるとして保健所の立入検査が入った。検査の結果、衛生管理上の不備が指摘され、10月末に「30日間の営業停止」処分が下された。</p>
+            <p>「お客様に迷惑をかけたことは申し訳ない。でも、処分の前に一度も話を聞いてもらえなかった」とAさんは語る。</p>
+            <p>行政手続に詳しい弁護士によると、不利益処分を行う前には原則として「弁明の機会の付与」が必要とされており、一定の重大な処分には「聴聞」手続きが義務づけられているという。</p>
+            <p>Aさんは都の審査請求で「事前手続き違反」を主たる争点とする方針だ。</p>
+            <p>なお保健所側は「手続きは適法に行った」とコメントしており、今後の審査結果が注目される。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 根拠法：行政手続法13条（不利益処分における事前手続き）
+● 聴聞：許認可の取消し・資格剥奪など重大な処分に必要
+● 弁明の機会：それ以外の不利益処分（営業停止など）に必要
+● 事前通知（15条）・理由の提示（14条）も義務
+● 審査請求の期間：処分を知った日の翌日から3ヶ月以内（行政不服申立法18条）</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="社会">
+        <div class="meta"><span class="badge 社会">社会</span><span class="date">1970年8月20日</span></div>
+        <h2>落石で死亡、遺族が高知県を提訴—道路管理の「瑕疵」めぐり最高裁が判断</h2>
+        <p class="lead">高知県の国道を歩いていた人物が、山肌からの落石に命を奪われた。県は「財政が厳しく全ての危険箇所に対処できない」と主張した。最高裁は、その言い訳を退けた。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>昭和45年8月、高知県の国道に面した山肌から落石が発生し、通行中の人物が死亡した。遺族は「道路管理者である高知県が適切な安全対策を怠った」として、国家賠償法に基づく損害賠償を求めて提訴した。</p>
+            <p>最高裁は「道路の設置または管理に瑕疵があった」と認定した。県側は「財政上の理由で全ての危険箇所に安全対策を施すことは不可能」と反論したが、最高裁はこれを退け、「営造物の安全性の欠如は管理者の責任を問いうる」と判示した。</p>
+            <p>この判決で示された「瑕疵」の定義——「通常有すべき安全性を欠いた状態」——は、その後の道路・河川など公共施設の管理責任をめぐる多くの裁判で引用されている。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 根拠法：国家賠償法2条（営造物の設置・管理の瑕疵）
+● 1条との違い：2条は無過失責任（故意・過失不要）
+● 「瑕疵」の定義：「通常有すべき安全性を欠いた状態」（この定義が出題される）
+● 財政難は免責事由にならない点が重要
+● 1条（公権力の行使）との使い分けも頻出</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="企業・経済">
+        <div class="meta"><span class="badge 企業経済">企業・経済</span><span class="date">2025年3月15日（架空）</span></div>
+        <h2>老舗旅館の創業家が対立—株主総会での「特別決議」を巡り法廷闘争へ</h2>
+        <p class="lead">創業100年の老舗旅館を舞台に、兄弟の骨肉の争いが勃発した。長男が強行した「61%賛成」の決議は有効か。たった5%の差が、旅館の命運と法廷闘争の行方を左右している。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>問題の発端は昨年12月の臨時株主総会。長男側が「建物老朽化を理由とした大規模改修のための定款変更」を議案として提出し、出席株主の議決権の過半数の賛成で可決したと主張した。</p>
+            <p>しかし次男側の弁護士は「定款変更は特別決議事項であり、出席者の3分の2以上の賛成が必要。今回の採決は要件を満たしていない」として、決議の無効確認を求めて提訴した。</p>
+            <p>株主構成は長男・次男がほぼ拮抗しており、総会当日の出席者の議決権のうち長男側は61%を占めていた。</p>
+            <p>会社法に詳しい専門家は「定款変更は特別決議事項なので3分の2が必要。61%では足りない」と指摘している。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 普通決議：出席者の議決権の過半数（定足数：過半数）
+● 特別決議：出席者の議決権の2/3以上（定足数：1/3まで引き下げ可）
+● 定款変更は特別決議事項（会社法309条2項11号）
+● 「61%＝過半数だが2/3（約66.7%）には届かない」→ 無効になりうる
+● 決議取消し（831条）vs 決議無効（830条2項）の違いも頻出</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="くらし">
+        <div class="meta"><span class="badge くらし">くらし</span><span class="date">2025年1月22日（架空）</span></div>
+        <h2>父が突然死、登記しないと罰金？—「相続登記義務化」に戸惑う遺族たち</h2>
+        <p class="lead">「父が亡くなって3か月、実家の土地がまだ父の名義のままで…」。知らないうちに義務違反になっていた——昨年4月から始まった「相続登記の義務化」が、普通の家庭に静かな波紋を広げている。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>「父が3か月前に亡くなりましたが、実家の土地の名義変更なんてどうすればいいか全く分からなくて」。都内在住のBさん（47歳）は困惑した表情で話す。</p>
+            <p>2024年4月に施行された改正不動産登記法により、不動産を相続した場合は「相続を知った日から3年以内」に登記申請が義務づけられた。怠った場合、正当な理由がなければ10万円以下の過料が科される。</p>
+            <p>全国の法務局では無料相談窓口を設けているほか、相続人申告登記という簡易な手続きも新設された。司法書士への依頼も増加しており、「義務化を知らずに時間が過ぎていく人が多い」と現場は警告する。</p>
+            <p>なお、相続放棄（自己のために相続の開始があったことを知った時から3か月以内）をすれば登記義務は生じない。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 相続登記義務化：2024年4月施行（改正不動産登記法）
+● 期限：相続開始＋不動産取得を知った日から3年以内
+● 罰則：10万円以下の過料
+● 相続放棄の期間：「自己のために相続の開始があったことを知った時から3か月」（民法915条）熟慮期間
+● 試験では民法の相続分野（法定相続分・遺留分・寄与分）と組み合わせて出題される</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="行政">
+        <div class="meta"><span class="badge 行政">行政</span><span class="date">1975年4月30日</span></div>
+        <h2>薬局の距離制限は「営業の自由」を侵害—最高裁、薬事法の条項を違憲と判断</h2>
+        <p class="lead">「あなたの薬局は、隣の薬局から近すぎる」——そんな理由で開業を拒まれた男性が国と闘い、最高裁で勝訴した。既得権を守るための規制は、憲法が保障する「職業の自由」に反するのか。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>昭和50年4月、最高裁は薬事法が定めていた「薬局の適正配置規制」（既存薬局との一定距離を保てない場合は開設不許可とする規定）について、「職業選択の自由を不当に制限するもの」として違憲と判示した。</p>
+            <p>原告の男性は広島市内で薬局を開こうとしたが、既存薬局との距離が薬事法施行規則の基準を満たさないとして不許可処分を受け、これを不服として争ってきた。</p>
+            <p>最高裁は「職業の自由を制限する立法が合憲かどうかは、規制目的と手段の合理的関連性によって判断される」とした上で、「競業者間の過当競争防止のための距離制限は、立法目的との関係で必要かつ合理的な措置とは言えない」と結論づけた。</p>
+            <p>この判決で示された「規制目的二分論」（消極目的規制と積極目的規制の区別）は、その後の職業の自由に関する判例の基礎となっている。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 根拠条文：憲法22条1項（職業選択の自由）
+● 規制目的二分論：
+  - 消極目的規制（警察的規制・危険防止）→ 厳格な合理性の基準
+  - 積極目的規制（社会政策・経済政策）→ 明白性の原則（緩やかな審査）
+● 距離制限は「消極目的」を装った規制で実質は競業避止 → 厳格審査 → 違憲
+● 試験では「規制目的の分類」と「審査基準の違い」が頻出</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="司法">
+        <div class="meta"><span class="badge 司法">司法</span><span class="date">2024年9月3日（架空）</span></div>
+        <h2>「行政の情報公開を求めた市民、審査請求から3か月待ち—制度の形骸化に専門家が警鐘</h2>
+        <p class="lead">税金で発注した工事の書類を見せてほしい——そんな市民の当然の要求が、黒塗り文書一枚で退けられた。不服を申し立てても3か月音沙汰なし。「情報公開」はいつから形だけになったのか。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>市民団体「○○市の財政を見る会」（仮名）は昨年6月、市が発注した道路工事の設計書と業者選定の記録の開示を請求した。市は「部分開示」として業者名の箇所を黒塗りにした文書を開示したため、団体は「非開示部分に正当理由なし」として審査請求を申し立てた。</p>
+            <p>行政不服申立法では、審査請求から裁決まで「標準審理期間」を設けるよう努めなければならないと定められているが、法的な期限は設けられていない。</p>
+            <p>専門家は「審査庁が自らの処分を審査する構造上の問題もある。情報公開審査会の独立性と迅速性が制度の信頼を左右する」と指摘する。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 審査請求の申立先：処分庁の最上級行政庁（原則）
+● 裁決の種類：却下裁決・棄却裁決・認容裁決（処分の取消し・変更）
+● 標準審理期間（行政不服申立法16条）：努力義務であり法的拘束力なし
+● 情報公開法：行政文書の開示請求権（1条・3条）、不服申立ては情報公開・個人情報保護審査会が関与
+● 審査請求の期間：処分を知った日の翌日から3か月以内</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="くらし">
+        <div class="meta"><span class="badge くらし">くらし</span><span class="date">2025年8月10日（架空）</span></div>
+        <h2>病院が「血液型」データを患者同意なく研究に使用—個人情報保護委員会が調査へ</h2>
+        <p class="lead">あなたの病歴が、知らないうちに製薬会社に渡っていた。「学術目的だから問題ない」と病院側は言うが、2万人分ものデータが無断で流れていた事実は変わらない。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>問題の病院は2023年から2024年にかけて、延べ約2万人分の患者データを匿名化せずに提供していた疑いがある。病院側は「学術目的であり問題ない」としているが、委員会は「要配慮個人情報の第三者提供には原則として本人の同意が必要」として調査に踏み切った。</p>
+            <p>個人情報保護法が定める「要配慮個人情報」には、病歴・健康診断の結果・身体障害の有無などが含まれており、通常の個人情報より厳格な取扱いが求められる。</p>
+            <p>同委員会は病院に対し、改善命令または勧告を行う方針を示している。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 要配慮個人情報（個人情報保護法2条3項）：病歴・犯罪歴・人種・障害・生体認証データ等
+● 通常の個人情報との違い：オプトアウト（本人の求めがない限り提供）による第三者提供が不可
+● 学術研究の例外：一定の条件下で適用除外あり（法76条）→ 試験でも例外規定が出題
+● 2022年改正で行政機関個人情報保護法が個人情報保護法に統合された点も頻出</p>
+          </div>
+        </section>
+      </article>
+      <hr>
+
+      <article class="card" data-category="社会">
+        <div class="meta"><span class="badge 社会">社会</span><span class="date">1978年10月4日</span></div>
+        <h2>「外国人に人権なし」は誤り—在日米国人の在留更新拒否、最高裁が判断を示す</h2>
+        <p class="lead">英語教師として日本で暮らしていた米国人男性が、反戦デモに参加したことを理由に在留更新を拒否された。「外国人に人権はないのか」——この問いに、最高裁は半分だけ「ある」と答えた。</p>
+        <button class="readmore" type="button" aria-expanded="false">続きを読む →</button>
+        <section class="detail" aria-hidden="true">
+          <div class="article-body">
+            <p>マクリーン氏は英語教師として日本に在留中、ベトナム反戦運動などの政治活動に参加していた。在留期間更新の申請に際し、法務大臣がこの政治活動を考慮して更新を不許可とした。</p>
+            <p>最高裁は昭和53年、「憲法の基本的人権の保障は、権利の性質上日本国民のみを対象としているものを除き、わが国に在留する外国人に対しても等しく及ぶ」と判示した。</p>
+            <p>一方で「在留の許否は法務大臣の裁量に委ねられている」とし、在留中の政治活動を更新の際に不利益に考慮することも、裁量の逸脱・濫用にはあたらないとした。</p>
+            <p>この「権利の性質説」と呼ばれる考え方は、現在も外国人の人権保障を考える上での基本原則とされている。</p>
+          </div>
+          <div class="exam-body">
+            <p class="exam-label">📚 試験との接点</p>
+            <p>● 権利の性質説：外国人も「権利の性質上可能な限り」憲法上の人権が保障される
+● 外国人に保障されない権利の例：入国の自由・再入国の自由・在留の権利・参政権
+● 外国人に保障される権利の例：表現の自由・信教の自由・財産権など
+● 法務大臣の在留許否の裁量：広範な裁量が認められている（試験で「羈束行為か裁量行為か」の文脈で出る）</p>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const cards = document.querySelectorAll('.card');
+    const readButtons = document.querySelectorAll('.readmore');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const selected = tab.dataset.filter;
+
+        tabs.forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+
+        cards.forEach((card) => {
+          const category = card.dataset.category;
+          const show = selected === 'すべて' || selected === category;
+          card.classList.toggle('hidden', !show);
+
+          const divider = card.nextElementSibling;
+          if (divider && divider.tagName === 'HR') {
+            divider.classList.toggle('hidden', !show);
+          }
+        });
+      });
+    });
+
+    readButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const panel = button.nextElementSibling;
+        const expanded = panel.classList.contains('open');
+
+        panel.classList.toggle('open', !expanded);
+        panel.setAttribute('aria-hidden', expanded ? 'true' : 'false');
+        button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        button.textContent = expanded ? '続きを読む →' : '閉じる ✕';
+      });
+    });
+  </script>
+</body>
+</html>
